@@ -1,0 +1,34 @@
+.chat-box-wrapper{
+    height: 100%;
+    width: 100%;
+    background-color: rgba(238, 189, 74,.3);
+}
+.chat-record-panel{
+    height: 80%;
+    width: 100%;
+    overflow-y: scroll;
+    /* background-color: rgb(241, 221, 221); */
+    padding: 6px;
+}
+.send-msg-part{
+    display: flex;
+    flex-direction: row;
+}
+
+.input-panel{
+    width: 80%;
+}
+.send-msg-btn{
+    border-radius: 15%;
+    background-color: rgb(133, 195, 19);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.text-msg-box{
+    padding: 3px;
+    border-radius: 3px;
+    background-color: rgb(161, 78, 78);
+}

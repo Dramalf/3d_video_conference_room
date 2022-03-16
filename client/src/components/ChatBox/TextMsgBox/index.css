@@ -1,0 +1,44 @@
+.msg-wrapper {
+    padding-bottom: 20px;
+}
+
+.message {
+    color: white;
+    padding: 18px 20px;
+    line-height: 26px;
+    font-size: 16px;
+    border-radius: 7px;
+    margin-bottom: 30px;
+    background: #86BB71;
+    width: 90%;
+    position: relative;
+}
+
+.message:after {
+    bottom: 100%;
+    left: 7%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-bottom-color: #86BB71;
+    border-width: 10px;
+    margin-left: -10px;
+
+}
+
+.my-message {
+    background: #86BB71;
+}
+
+.other-message {
+    background: #94C2ED;
+}
+
+.other-message :after {
+    border-bottom-color: #94C2ED;
+    left: 93%;
+
+}
