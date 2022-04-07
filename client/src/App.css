@@ -1,44 +1,109 @@
-.App{
+.App {
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
-}
-.conference-header-wrapper{
-  background-color: #b355c7;
-  height: 10vh;
-}
-.conference-body-wrapper{
-  background-color: #e3e4e5;
-  display: flex;
-  flex:1;
+  background-color: #fff;
   flex-direction: row;
+  box-sizing: border-box;
+  padding: 2vh;
 }
 
-.conference-participants-list-wrapper{
-  background-color: #666333;
-  width: 15vw;
+.hide {
+  display: none;
 }
-.conference-panel-wrapper{
-  background-color: #227ac3;
-  width: 85vw;
+
+.selected {
+  background-color: #0087FF !important;
+}
+
+.app-main-box {
+  height: 100%;
+  width: 100%;
   display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-right: 2vh;
+}
+
+.app-function-box {
+  border-radius: 1vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.folded {
+  width: 0vw;
+  transition: width ease-in-out .08s;
+}
+
+.conference-header-wrapper {
+  background-color: #EDF2F9;
+  height: 8vh;
+  border-radius: 1vh;
+}
+
+.conference-body-wrapper {
+  background-color: #EDF2F9;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-radius: 1vh;
+  margin-top: 2vh;
 }
-.conference-webgl-wrapper{
-  background-color: #e1e1a3;
 
-  width: 60vw;
-  height: 45vw;
+.conference-participants-list-wrapper {
+  background-color: #EDF2F9;
+  width: 20vw;
+  flex: 1;
+  border-radius: 1vh;
 }
-.conference-textchat-wrapper{
+
+.conference-webgl-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.add-space {
+  margin-top: 2vh;
+}
+
+.conference-textchat-wrapper {
   background-color: #fff;
-  flex:1;
-  height: 45vw;
+  border-radius: 1vh;
+  overflow: hidden;
+  flex: 2;
+  width: 20vw;
+  height: 100%;
 }
-.conference-footer-wrapper{
-  background-color: gray;
-  height: 10vh;
+
+.conference-footer-wrapper {
+  background-color: #EDF2F9;
+  height: 8vh;
+  margin-top: 2vh;
+  /* border:1px solid #000; */
+  flex-shrink: 1;
+  border-radius: 1vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.function-btn {
+  padding: 1vh;
+  background-color: #fff;
+  border-radius: 1vh;
+  margin: 0 1vh;
+  box-shadow: -1px 1px 1px 1px rgba(142, 226, 244, 0.75);
+
+  cursor: pointer;
+}
+
+.function-btn:hover {
+  background-color: #fff;
 }

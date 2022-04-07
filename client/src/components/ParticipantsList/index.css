@@ -1,0 +1,11 @@
+.user-list-wrapper{
+    padding: 2vh;
+}
+.user-list-wrapper h4{
+    padding-bottom: 1vh;
+    margin-bottom: 1vh;
+    border-bottom: 1px solid #c7c7c7;
+}
+.user-list-box{
+    padding: 1vh;
+}

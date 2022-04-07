@@ -7,20 +7,20 @@ import {
 
 export const LightsList: Object3D[] = []
 
-const ambientLight: AmbientLight = new AmbientLight(0x404040,0.9)
+const ambientLight: AmbientLight = new AmbientLight(0x404040,0.1)
 
 export const pointLight: PointLight = new PointLight(
   'rgb(240, 225, 240)',
-  0.7
+  1
 )
 
 pointLight.position.set(0, 20, 0)
 
 export const spotLight: SpotLight = new SpotLight(
   'rgb(255, 255, 255)',
-  0.7,
+  1,
   200,
-  Math.PI / 180 * 30,
+  Math.PI ,
   0,
   0
 )
@@ -31,4 +31,4 @@ spotLight.position.set(0, 200, 0)
 
 
 
-LightsList.push(ambientLight)
+LightsList.push(ambientLight,spotLight,pointLight)

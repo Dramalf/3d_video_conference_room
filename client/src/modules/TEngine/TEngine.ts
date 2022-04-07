@@ -3,6 +3,7 @@ import {
   AxesHelper,
   BoxBufferGeometry,
   GridHelper,
+  RGBAFormat,
   TextureLoader,
   DoubleSide,
   Mesh,
@@ -100,7 +101,7 @@ export class TEngine {
     const scene = this.scene;
     new RGBELoader()
       .setDataType(UnsignedByteType)
-      .load('/texture/015.hdr', function (texture) {
+      .load('/texture/railway_bridge_02_2k.hdr', function (texture) {
         const envMap = pmremGenerator.fromEquirectangular(texture).texture;
         // envMap.isPmremTexture = true;
         pmremGenerator.dispose();
@@ -129,7 +130,7 @@ export class TEngine {
 
 
 
-    const controls = new FirstPersonControls(this.camera);
+    const controls = new FirstPersonControls(this.camera,this.dom);
     controls.lookSpeed = 0.2; //鼠标移动查看的速度
     controls.movementSpeed = 20; //相机移动速度
     // controls.noFly = true;
@@ -263,9 +264,10 @@ export class TEngine {
       }
     })
   }
-  addUserVideo(userVideo: HTMLCanvasElement, userName: string) {
+  addUserVideo(userVideo: HTMLVideoElement, userName: string) {
     var geometry = new PlaneGeometry(48, 36, 96, 72);
-    const texture = new CanvasTexture(userVideo);
+    const texture = new VideoTexture(userVideo);
+    texture.format = RGBAFormat;
     const material = new MeshBasicMaterial({
       map: texture,
       transparent: true,
@@ -273,7 +275,7 @@ export class TEngine {
     })
     material.needsUpdate=true
     const box = new Mesh(geometry, material)
-
+   
     const { x, y, z } = this.seatsPosition[this.newEnterIndex]
     this.newEnterIndex++;
     box.position.set(x, y, z)
@@ -322,6 +324,11 @@ export class TEngine {
     
        // @ts-ignore
     console.log(window.facemesh)
+  }
+  adjustBrightness(type:string){
+    if(type==='brighter'){
+
+    }
   }
   disableControls() {
     this.controls.enabled = false
