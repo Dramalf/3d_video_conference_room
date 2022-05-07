@@ -11,6 +11,9 @@ h1,h2,h3,h4,h5,h6{margin: 0px; padding: 0px;}
 	justify-content:space-around;
 	align-items: center;
 }
+.login-form .hiden{
+	display: none;
+}
 .login-form-wrapper{
 
 	width: 20vw;
@@ -23,6 +26,9 @@ h1,h2,h3,h4,h5,h6{margin: 0px; padding: 0px;}
 	justify-content: center;
 	align-items:center;
 	flex-direction: column;
+	perspective: 1200px;
+	transform-style: preserve-3d;
+    transform-origin: left;
 }
 .login-form-wrapper .title{
 	display: none;
@@ -37,14 +43,15 @@ h1,h2,h3,h4,h5,h6{margin: 0px; padding: 0px;}
 	align-items: center;
 	flex-direction: column;
 }
-.login-form .form-option{
+ .form-option{
 	display: block;
 	
 	box-sizing: inherit;
 	width: 100%;
 	flex-grow: auto;
+	margin-bottom: 1vh;
 }
-.login-form .form-option input{
+.form-option input{
 	outline-style: none;
 	width: 100%;
 	box-sizing: border-box;
@@ -53,6 +60,26 @@ h1,h2,h3,h4,h5,h6{margin: 0px; padding: 0px;}
 	padding: 8px 2px;
 	caret-color: #0087FF;
 	border: 1px solid #e3e4e5;
+}
+#auth{
+	height: 3vh;
+	width: 3vh;
+	margin: 0;
+	padding: 0;
+	margin-left: 1vh;
+}
+
+.login-form .form-option span{
+	font-size: 1rem;
+	font-weight: 600;
+	color: #8e7c47;
+}
+.login-form .radio-option{
+	margin-top: 1vh;
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+	align-items: center;
 }
 .login-img{
 
@@ -73,7 +100,7 @@ h1,h2,h3,h4,h5,h6{margin: 0px; padding: 0px;}
 	color:#fff;
 	background-color: #0087FF;
 	width: 80%;
-	margin: 0;
+	margin: 1vh 0;
 	padding: 8px 3px;
 	border: 1px solid transparent; 	
 	border-radius: 0.5rem;
@@ -113,7 +140,7 @@ h1,h2,h3,h4,h5,h6{margin: 0px; padding: 0px;}
 		text-shadow:0px 0px 0 rgb(250, 227, 46), -1px 1px 0 rgb(108, 175, 19),-2px 2px 1px rgba(218, 235, 111, 0.05),-2px 2px 1px rgba(233, 233, 21, 0.5),0px 0px 1px rgba(0,0,0,.2);	}
 }
 
-@media screen and (max-width: 420px){
+@media screen and (max-width: 900px){
 	.login-wrapper{
 		height: 70vh;
 		width: 100vw;
@@ -162,6 +189,7 @@ h1,h2,h3,h4,h5,h6{margin: 0px; padding: 0px;}
 	}
 	.login-form .btn{
 		margin-top: 5vh;
+		opacity: 0.6;
 		width: 50vw;
 	}
 	.info{

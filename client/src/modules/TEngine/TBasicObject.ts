@@ -16,7 +16,13 @@ import {
 import { stageTexture,wallTexture } from './TTextures'
 
 export const basicObjectList: Object3D[] = []
-
+export const body:Mesh=new Mesh(
+  new BoxBufferGeometry(10, 20, 10),
+  new MeshStandardMaterial({
+    map:stageTexture
+  })
+);
+body.position.x=0;
 // 地面
 const stage: Mesh = new Mesh(
   new BoxBufferGeometry(200, 10, 200),

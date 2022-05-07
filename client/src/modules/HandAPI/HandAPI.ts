@@ -5,7 +5,7 @@ import { GestureRecognition } from './gesture';
 export class HandAPI {
     private handDetector!: handPoseDetection.HandDetector;
     private detectVideo!: HTMLVideoElement;
-    private gestureRecognition=new GestureRecognition()
+    private gestureRecognition = new GestureRecognition()
     async createDetector() {
         console.log(this.gestureRecognition)
         const model = handPoseDetection.SupportedModels.MediaPipeHands;
@@ -22,19 +22,29 @@ export class HandAPI {
         this.detectVideo = targetVideo
         return this
     }
-    detect() {
-        this.gestureRecognition.normalize(this.gestureRecognition.gestures.openPlam)
-        setInterval(async () => {
+    onDetect(cb=()=>{}) {
+         setInterval(async () => {
             let hands = await this.handDetector.estimateHands(this.detectVideo);
-           // console.log(hands)
-           hands.map(hand=>{
-            let norhand=this.gestureRecognition.normalize(hand)
-            
-            let norgesture=this.gestureRecognition.normalize(this.gestureRecognition.gestures.openPlam)
-            console.log(norhand,norgesture)
-            this.gestureRecognition.calcCorrelation(norhand,norgesture)
-           })
-        }, 1000)
+            if (hands[0]) {
+                // console.log('3d996',hands[0].keypoints3D![4],hands[0].keypoints3D![8])
 
+                let thumb_tip = hands[0].keypoints3D![3];
+                let index_finger_tip = hands[0].keypoints3D![7];
+                let d = Math.sqrt(Math.pow((thumb_tip.x - index_finger_tip.x), 2) + Math.pow((thumb_tip.y - index_finger_tip.y), 2))
+                console.log(d)
+                if (d < 0.05) {
+                    console.log('比心')
+                    cb()
+                }
+            }
+
+            //    hands.map(hand=>{
+            //     let norhand=this.gestureRecognition.normalize(hand)
+
+            //     let norgesture=this.gestureRecognition.normalize(this.gestureRecognition.gestures.openPlam)
+            //     console.log(norhand,norgesture)
+            //     this.gestureRecognition.calcCorrelation(norhand,norgesture)
+            //    })
+        }, 10)
     }
 }

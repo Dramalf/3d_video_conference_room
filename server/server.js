@@ -1,3 +1,19 @@
+// const fs = require('fs');
+// const  app = require('express')();
+// const options = {
+//   key: fs.readFileSync('/home/cert/dramalf.xyz.key'),
+//   cert: fs.readFileSync('/home/cert/dramalf.xyz.pem')
+//   };
+// const https=require('https');
+// const  server = https.createServer(options,app).listen(8080,function(){
+//   console.log("SERVER LISTENING");
+// });
+// const io= require("socket.io")(8080, {
+//     cors: {
+//       origin: ["https://116.62.218.178:80"]
+//     }
+//   })
+
 const io = require("socket.io")(8080, {
   cors: {
     origin: ["http://localhost:3000"]
@@ -17,17 +33,19 @@ const SERVER_USER_EVENT_UPDATE_USERS = 'SERVER_USER_EVENT_UPDATE_USERS';
 const CLIENT_USER_EVENT_SEND_MESSAGE = "CLIENT_USER_EVENT_SEND_MESSAGE"
 const SERVER_USER_EVENT_BROADCAST_MESSAGE='SERVER_USER_EVENT_BROADCAST_MESSAGE';
 function getOnlineUsers() {
-  return connectionList.map(connection => {
+  let arr=connectionList.map(connection => {
     const { userName, roomID } = connection
     return {
       userName,
       roomID
     }
   })
+  return JSON.parse(JSON.stringify(arr))
 }
 
 function updateUsers(socket, roomID, userName) {
   socket.join(roomID)
+  console.log('updates',getOnlineUsers().map(c=>c.userName))
   socket.to(roomID).emit(SERVER_USER_EVENT,
     {
       type: SERVER_USER_EVENT_UPDATE_USERS,
@@ -50,11 +68,21 @@ function broadcastTextMsg(socket,payload){
 }
 io.on("connection", socket => {
   const id = socket.id
-  socket.emit("FIRSTASKLIST",{
-    onlineUsers: getOnlineUsers(),
-    newEnterUserName: ""
+  // socket.emit("FIRSTASKLIST",{
+  //   onlineUsers: getOnlineUsers(),
+  //   newEnterUserName: ""
+  // })
+  var address=socket.request.connection.remoteAddress;
+
+  console.log('new connection from'+address)
+  socket.on('ASK_LIST',()=>{
+    // console.log('send online users list')
+    // socket.emit("FIRSTASKLIST",{
+    //   onlineUsers: getOnlineUsers(),
+    //   newEnterUserName: ""
+    // })
   })
-  console.log('send online users list')
+ 
   socket.on(CLIENT_USER_EVENT, (jsonString) => {
 
     const msg = JSON.parse(jsonString);
@@ -68,9 +96,18 @@ io.on("connection", socket => {
         roomID: roomID
       })
       updateUsers(socket, roomID, loginName)
+      let data=JSON.stringify({
+        onlineUsers: getOnlineUsers(),
+        newEnterUserName: loginName
+      })
+      setTimeout(() => {
+        socket.emit("FIRSTASKLIST",data)
+      }, 0);
+      
     }
     else if (type === CLIENT_USER_EVENT_SEND_MESSAGE) {
       broadcastTextMsg(socket,payload)
+      console.log('broadcast',connectionList)
     }
   })
 
@@ -101,10 +138,19 @@ io.on("connection", socket => {
     return userName
   }
   function userLeaveRoom(socket){
-    connectionList=connectionList.filter(c=>c.socket!=socket)
+    connectionList=connectionList.filter(c=>{
+      if(c.socket==socket){
+        socket.join(100)
+        socket.to(100).emit('user_leave',c.userName)
+      }
+      return c.socket!=socket
+    })
   }
   socket.on("disconnect", roomId => {
-    console.log(findUserNameBySocket(socket), " >>leave>> ", roomId)
+    let leaveName=findUserNameBySocket(socket)
+    console.log(leaveName, " >>leave>> ??", roomId)
+    
+    socket.emit("user_leave", leaveName)
     userLeaveRoom(socket)
   })
   socket.on("sendNewMsg", (textMsg, roomId) => {
@@ -124,13 +170,5 @@ io.on("connection", socket => {
     }
   });
 
-  socket.on('disconnect', function () {
-    connectionList = connectionList.filter(item => {
-      return item !== socket.id;
-    });
-    connectionList.forEach(item => {
-      // item.socket.emit(SERVER_USER_EVENT, { type: SERVER_USER_EVENT_UPDATE_USERS, payload: getOnlineUser()});
-      //   updateUsers(item.socket);
-    });
-  });
+
 })

@@ -22,11 +22,14 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  flex-shrink: 2;
   margin-right: 2vh;
 }
 
 .app-function-box {
   border-radius: 1vh;
+  flex-grow: 1;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
 }
@@ -40,11 +43,54 @@
   background-color: #EDF2F9;
   height: 8vh;
   border-radius: 1vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+}
+
+.header-item {
+  margin-left: 2vh;
+  cursor: pointer
+}
+
+.header-item h4 {
+  color: #ae8304;
+  padding: 0 4vh;
+
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  border-radius: 1vh;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  /* padding: 2vh; */
+  z-index: 1;
+  cursor: pointer
+}
+
+.dropdown-content p {
+  text-align: center;
+
+}
+
+.dropdown-content p:hover {
+  color: #0087FF;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
 .conference-body-wrapper {
   background-color: #EDF2F9;
   display: flex;
+
+  position: relative;
   flex: 1;
   flex-direction: row;
   flex-direction: row;
@@ -106,4 +152,159 @@
 
 .function-btn:hover {
   background-color: #fff;
+}
+
+.option-btn {
+  display: flex;
+  flex-direction: row;
+  padding-top: 0.8vh;
+}
+
+.button-cover,
+.knobs,
+.layer {
+  margin-left: 1vh;
+}
+
+.button {
+  position: relative;
+  top: 50%;
+  width: 74px;
+  height: 36px;
+  margin: -20px auto 0 auto;
+  border: 0.4vh solid #c1c2c3 !important;
+  overflow: hidden;
+}
+
+.button.r,
+.button.r .layer {
+  border-radius: 100px;
+}
+
+.button.b2 {
+  border-radius: 2px;
+}
+
+.checkbox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+
+  z-index: 3;
+}
+
+.knobs {
+  z-index: 2;
+}
+
+.layer {
+  width: 100%;
+  background-color: #ebf7fc;
+  transition: 0.3s ease all;
+  z-index: 1;
+}
+
+/* Button 1 */
+#button-1 .knobs:before {
+  content: "2D";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 10px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  padding: 9px 4px;
+  background-color: #03a9f4;
+  border-radius: 50%;
+  transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+}
+
+#button-1 .checkbox:checked+.knobs:before {
+  content: "VR";
+  left: 42px;
+  background-color: #e4b06b;
+}
+
+#button-1 .checkbox:checked~.layer {
+  background-color: #fcebeb;
+}
+
+#button-1 .knobs,
+#button-1 .knobs:before,
+#button-1 .layer {
+  transition: 0.3s ease all;
+}
+
+.mask {
+  z-index: 2;
+}
+
+.mask::before {
+  content: attr(data-loadinfo);
+
+  font-size: larger;
+  font-weight: 700;
+
+  position: absolute;
+  margin: auto;
+  text-align: center;
+  animation: bling 1s ease-in-out infinite alternate;
+  z-index: 9992;
+}
+
+.mask:after {
+
+  content: attr(data-loadinfo);
+  margin: -20px;
+  position: absolute;
+  top: 0;
+  text-align: center;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  filter: blur(20px);
+
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 9991;
+}
+
+@keyframes bling {
+  0% {
+    color: rgb(255, 136, 0);
+  }
+
+  100% {
+    color: #ebf7fc;
+    text-shadow: 0 0 10px #0ebeff, 0 0 20px #0ebeff, 0 0 50px #0ebeff, 0 0 100px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .sm-app {
+    padding: 0;
+  }
+
+  .sm-app-function-box {
+    position: absolute;
+    width: 100vw;
+    bottom: 8vh;
+    z-index: 10;
+    background-color: #EDF2F9;
+  }
+
+  .sm-conference-textchat-wrapper {
+    width: 100%;
+  }
+
+  .sm-conference-participants-list-wrapper {
+    width: 100%;
+  }
 }

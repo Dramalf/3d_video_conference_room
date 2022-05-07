@@ -50,7 +50,8 @@ export default function ChatBox(props: ChatBoxProps) {
                 isSelf:false,
                 timeStamp:Date.now()
             };
-            update_msg_history([...msg_history,newMsgInfo]);
+            (msgBox as HTMLElement).appendChild(textBox(newMsgInfo));
+            //update_msg_history([...msg_history,newMsgInfo]);
              //(msgBox as HTMLElement).appendChild(msgBubbles(userName, message, false));
              (msgBox as HTMLElement).scrollTop=(msgBox as HTMLElement).scrollHeight
         }
@@ -61,7 +62,30 @@ export default function ChatBox(props: ChatBoxProps) {
                 console.log('revieve new msg')
             }
         })
-    })
+        return () => {
+            socket.removeAllListeners()
+      
+          }
+    },[])
+    function textBox(newMsgInfo:any){
+        const {
+            message,
+            userName,
+            isSelf,
+            timeStamp
+        }=newMsgInfo
+        let diva=document.createElement('div');
+        let divb=document.createElement('div');
+        diva.classList.add('msg-wrapper');
+       
+        divb.className=`message ${isSelf?'my-message':'other-message'}`;
+        divb.setAttribute('data-username',isSelf?'':userName);
+        divb.setAttribute('data-time',new Date(timeStamp).toTimeString().substr(0, 8));
+        diva.appendChild(divb);
+        divb.innerText=message;
+        return diva;
+
+    }
     function sendTextMsg() {
         const msgBox: HTMLElement | null = document.querySelector(".chat-record-panel")
         const inputText: HTMLTextAreaElement | null = document.querySelector(".input-panel textarea")
@@ -83,8 +107,8 @@ export default function ChatBox(props: ChatBoxProps) {
                 timeStamp:Date.now()
             };
          
-            update_msg_history([...msg_history,newMsgInfo]);
-            // (msgBox as HTMLElement).appendChild(textBox());
+            //update_msg_history([...msg_history,newMsgInfo]);
+             (msgBox as HTMLElement).appendChild(textBox(newMsgInfo));
           
             // (msgBox as HTMLElement).appendChild(msgBubbles(props.userName, textMsg, true) as unknown as Node);
             (msgBox as HTMLElement).scrollTop=(msgBox as HTMLElement).scrollHeight;
@@ -96,11 +120,7 @@ export default function ChatBox(props: ChatBoxProps) {
         <div className="chat-box-wrapper">
             <div className="chat-record-panel">
                 <h4>聊天</h4>
-                {
-                    msg_history&&msg_history.map((m: any)=>{
-                        return <TextMsgBox key={m.message} msgInfo={m}/>
-                    })
-                }
+              
             </div>
             <div className="send-msg-part">
                 <div className="input-panel">

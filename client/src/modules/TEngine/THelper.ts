@@ -18,4 +18,4 @@ const pointLightHelper: PointLightHelper = new PointLightHelper(pointLight, poin
 
 const spotLightHelper: SpotLightHelper = new SpotLightHelper(spotLight, spotLight.color)
 
- helperList.push(axesHelper,pointLightHelper,spotLightHelper)
+  helperList.push(axesHelper)

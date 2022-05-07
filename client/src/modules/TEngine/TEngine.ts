@@ -5,6 +5,7 @@ import {
   GridHelper,
   RGBAFormat,
   TextureLoader,
+  ObjectLoader,
   DoubleSide,
   Mesh,
   MeshStandardMaterial,
@@ -25,7 +26,10 @@ import {
   CanvasTexture,
   AnimationMixer,
   MeshBasicMaterial,
-  PlaneGeometry
+  PlaneGeometry,
+  CineonToneMapping,
+  LinearToneMapping,
+  QuadraticBezierCurve3
 } from "three"
 import * as TWEEN from '@tweenjs/tween.js'
 import Stats from 'three/examples/jsm/libs/stats.module'
@@ -35,17 +39,20 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 import { FaceMeshFaceGeometry } from "./js/face.js";
-
+import { ambientLight } from './Tlights'
+import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 
 export class TEngine {
 
   private dom: HTMLElement
-  private renderer: WebGLRenderer
+  public renderer: WebGLRenderer
   private mixer: AnimationMixer | undefined
+  private pmremGenerator: PMREMGenerator
   private scene: Scene
   private camera: PerspectiveCamera
+  private ambientLight: AmbientLight
   private clock: Clock
-  private controls: FirstPersonControls
+  private controls: FirstPersonControls | OrbitControls
   private seatsPosition = [{
     x: -38,
     y: 29,
@@ -84,45 +91,49 @@ export class TEngine {
 
   private userVideoBoxes: Array<{ object: any, videoName: any }> = []
   private model!: Group
+  private heart!: Group
   private newEnterIndex = 0
-  constructor(dom: HTMLElement) {
+  stats: Stats
+  constructor(dom: HTMLElement, enableVR = false, browserType: string) {
     this.dom = dom
     this.renderer = new WebGLRenderer({
       antialias: true
     })
+    this.renderer.xr.enabled=true;
     this.clock = new Clock()
-    this.renderer.shadowMap.enabled = true
-
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.toneMapping = LinearToneMapping
+    this.ambientLight = ambientLight;
     this.scene = new Scene()
-    // import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+    this.scene.add(this.ambientLight);
     const pmremGenerator = new PMREMGenerator(this.renderer); // 使用hdr作为背景色
     pmremGenerator.compileEquirectangularShader();
-
+    this.pmremGenerator = pmremGenerator;
     const scene = this.scene;
+  const body=new Object3D();
+
     new RGBELoader()
       .setDataType(UnsignedByteType)
-      .load('/texture/railway_bridge_02_2k.hdr', function (texture) {
+      .load('/texture/autumn_forest_04_1k.hdr', function (texture) {
         const envMap = pmremGenerator.fromEquirectangular(texture).texture;
         // envMap.isPmremTexture = true;
         pmremGenerator.dispose();
         console.log('here');
         scene.environment = envMap; // 给场景添加环境光效果
         scene.background = envMap; // 给场景添加背景图
-      }, () => { }, (e) => { console.log('123,', e); });
+      }, () => { }, (e) => { console.log('error in load env_texture', e); });
 
+    this.camera = new PerspectiveCamera(60, dom.offsetWidth / dom.offsetHeight, 1, 1000)
 
-    this.camera = new PerspectiveCamera(55, dom.offsetWidth / dom.offsetHeight, 1, 1000)
+    body.add(this.camera)
 
-    this.camera.position.set(-38, 28, 0)
-    this.camera.lookAt(new Vector3(14, 28, 0))
-    //this.camera.up = new Vector3(0, 1, 0)
-
-
+body.position.set(0,28,0);
     this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true)
 
     // 初始性能监视器
     const stats = Stats()
     const statsDom = stats.domElement
+    this.stats = stats;
     statsDom.style.position = 'fixed'
     statsDom.style.top = '0'
     statsDom.style.right = '5px'
@@ -130,56 +141,77 @@ export class TEngine {
 
 
 
-    const controls = new FirstPersonControls(this.camera,this.dom);
-    controls.lookSpeed = 0.2; //鼠标移动查看的速度
-    controls.movementSpeed = 20; //相机移动速度
-    // controls.noFly = true;
-    controls.constrainVertical = true; //约束垂直
-    controls.verticalMin = Math.PI / 2;
+    let controls;
+    let useorbit = browserType === 'oculus' || browserType === 'android' || browserType === 'ios'
 
-    controls.verticalMax = Math.PI / 2 + 0.0000001;
+    if (useorbit) {
+      controls = new OrbitControls(this.camera, this.dom);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.screenSpacePanning = false;
+      controls.target = new Vector3(0, 28, 0)
+      controls.maxPolarAngle = Math.PI / 2 + 0.001;
+      controls.minPolarAngle = Math.PI / 2;
+      controls.update()
+    } else {
+      controls = new FirstPersonControls(this.camera, this.dom);
+      controls.lookSpeed = 0.2; //鼠标移动查看的速度
+      controls.movementSpeed = 20; //相机移动速度
+      // controls.noFly = true;
+      controls.constrainVertical = true; //约束垂直
+      controls.verticalMin = Math.PI / 2;
+
+      controls.verticalMax = Math.PI / 2 + 0.0000001;
+    }
+
     this.controls = controls
 
-    const updateRotation = () => {
+    this.controls.object.position.set(-38, 28, 0)
+    this.controls.object.lookAt(new Vector3(0, 0, 0))
 
-      this.userVideoBoxes.map((vb, index) => {
-        if (!vb) return
-        const { object } = vb
-        const cameraPosition = this.camera.position.clone()
-        const lookAtPosition = new Vector3()
-        this.camera.getWorldDirection(lookAtPosition)
-        const videoPostion = object.position.clone()
-        //const rotY=-Math.atan(lookAtPosition.x/lookAtPosition.z)-Math.PI/2
-        const rotY = Math.atan((videoPostion.x - cameraPosition.x) / (videoPostion.z - cameraPosition.z))
+    this.camera.up = new Vector3(0, 1, 0)
+    //@ts-ignore
+    useorbit && this.controls.update();
+   
 
-        object.rotation.y = rotY
+    const onWindowResize = () => {
 
-      })
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+
+      this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true);
+
     }
+    window.addEventListener('resize', onWindowResize);
 
-    const renderFun = () => {
+    //     const renderFun = () => {
+    // //@ts-ignore
+    //       this.controls.update(this.clock.getDelta())
+    //       this.renderer.render(this.scene, this.camera)
+    //       stats.update()
+    //       TWEEN.update();
+    //      updateUserVideoRotation()
+    //       requestAnimationFrame(renderFun)
+    //     }
+    //this.renderid=requestAnimationFrame(this.renderFun);
 
-      this.controls.update(this.clock.getDelta())
-      var target = new Vector3()
-      this.camera.getWorldDirection(target)
-      //console.log(Math.atan2(target.x,target.z))
+    this.renderer.setAnimationLoop(() => {
+      !useorbit&&this.controls.update(this.clock.getDelta())
+      useorbit&&(this.controls as OrbitControls).update()
       this.renderer.render(this.scene, this.camera)
       stats.update()
-      updateRotation()
-      // var delta = this.clock.getDelta();
-      //  if (this.mixer != null) {
-      //     this. mixer.update(delta);
-      // };
-      //this.mixer&&(this.mixer as AnimationMixer).update(this.clock.getDelta());
-      requestAnimationFrame(renderFun)
-    }
+      TWEEN.update();
+      this.updateUserVideoRotation()
+    })
 
-    renderFun()
+
 
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
+    dom.appendChild( VRButton.createButton( this.renderer ) )
   }
-  loadRoom() {
+
+  loadRoom(cb = () => { }) {
     //载入模型
     const loader: GLTFLoader = new GLTFLoader()
 
@@ -205,42 +237,23 @@ export class TEngine {
       this.scene.add(gltf.scene)
       gltf.scene.position.set(0, 0, 0)
       gltf.scene.scale.set(0.3, 0.3, 0.3)
+      cb();
     }, () => { }, (e) => { console.log("error", e) })
 
   }
 
-
-  loadHumanModel(faceCanvas: HTMLCanvasElement) {
-    //载入模型
-    const loader: GLTFLoader = new GLTFLoader()
-
-    loader.load('/models/face.gltf', (gltf) => {
-
-      gltf.scene.traverse((object) => {
-        if ((object as THREE.Mesh).isMesh) {
-          // 修改模型的材质
-          object.castShadow = true
-          object.receiveShadow = true
-        }
-      })
-      gltf.scene.receiveShadow = true
-      this.model = gltf.scene
-      this.scene.add(gltf.scene);
-      const texture = new CanvasTexture(faceCanvas);
-      const material = new MeshBasicMaterial({
-        map: texture,
-        side: DoubleSide
-      });
-      (gltf.scene.children[0] as Mesh).material = material;
-      new MeshBasicMaterial({
-        color: 0xe3e4e5,
-        // 前面FrontSide  背面：BackSide 双面：DoubleSide
-        side: DoubleSide,
-      });
-      gltf.scene.position.set(10, 30, 10);
-      gltf.scene.scale.set(5, 5, 5)
-      gltf.scene.rotateZ(Math.PI / 2);
-      gltf.scene.rotateX(Math.PI)
+  load_sprite() {
+    const loader = new ObjectLoader()
+    console.log('120')
+    loader.load('/models/sprite/sprite.json', (obj) => {
+      this.scene.add(obj)
+      obj.position.set(-29, 30, -20)
+      obj.scale.set(10, 10, 10)
+      console.log(obj, 120)
+      // this.mixer= new AnimationMixer(gltf.scene)
+      // var action=this.mixer.clipAction(gltf.animations[0])
+      // // action.timeScale=0.8
+      // action.time=4
 
     }, () => { }, (e) => { console.log("error", e) })
 
@@ -250,19 +263,33 @@ export class TEngine {
       this.scene.add(elem)
     })
   }
-  updateUserTexture(userVideo: HTMLCanvasElement, userName: string) {
-    const texture = new CanvasTexture(userVideo);
-    const material = new MeshBasicMaterial({
-      map: texture,
-      transparent: true,
-      side: DoubleSide
+  updateUserVideoRotation() {
+
+    this.userVideoBoxes.map((vb, index) => {
+      if (!vb) return
+      const { object } = vb
+      const cameraPosition = this.camera.position.clone()
+
+      const videoPostion = object.position.clone()
+      //const rotY=-Math.atan(lookAtPosition.x/lookAtPosition.z)-Math.PI/2
+      const rotY = Math.atan((videoPostion.x - cameraPosition.x) / (videoPostion.z - cameraPosition.z))
+
+      object.rotation.y = rotY
+
     })
-    this.userVideoBoxes.some(box => {
-      if (box.videoName === userName) {
-        box.object.material = material
-        return true
-      }
-    })
+  }
+
+  changeScene(url: string) {
+    new RGBELoader()
+      .setDataType(UnsignedByteType)
+      .load(`/texture/${url}.hdr`, (texture) => {
+        const envMap = this.pmremGenerator.fromEquirectangular(texture).texture;
+        // envMap.isPmremTexture = true;
+        this.pmremGenerator.dispose();
+        this.scene.environment = envMap; // 给场景添加环境光效果
+        this.scene.background = envMap; // 给场景添加背景图
+      }, () => { }, (e) => { console.log('123,', e); });
+
   }
   addUserVideo(userVideo: HTMLVideoElement, userName: string) {
     var geometry = new PlaneGeometry(48, 36, 96, 72);
@@ -273,12 +300,13 @@ export class TEngine {
       transparent: true,
       side: DoubleSide
     })
-    material.needsUpdate=true
+    material.needsUpdate = true
     const box = new Mesh(geometry, material)
-   
+
     const { x, y, z } = this.seatsPosition[this.newEnterIndex]
     this.newEnterIndex++;
     box.position.set(x, y, z)
+
     box.scale.set(0.4, 0.4, 0.4)
     //box.rotateY(-Math.PI/3)
 
@@ -289,62 +317,128 @@ export class TEngine {
     })
     this.scene.add(box);
   }
-  drawFace() {
-    // const texture = new CanvasTexture(faceCanvas);
-    // const material = new MeshBasicMaterial({
-    //   map: texture,
-    //   side: DoubleSide
-    // })
-    const loader = new TextureLoader();
-    let modelRef;
-    let referenceFace;
-    // Create material for mask.
-    
-    const material = new MeshStandardMaterial({
-      color: 0xb3b4cc,
-      roughness: 0.8,
-      metalness: 0,
-    //  map: null, // Set later by the face detector.
-      transparent: true,
-      side: DoubleSide,
-      opacity: 1,
-    });
+  removeUserVideo(userName: string) {
+    this.userVideoBoxes = this.userVideoBoxes.filter(b => {
+      if (b.videoName === userName) {
+        console.log('997', b);
+        b.object.material.dispose();
+        b.object.geometry.dispose();
+        this.scene.remove(b.object);
 
-    // Create a new geometry helper.
-    const faceGeometry = new FaceMeshFaceGeometry();
-
-    // Create mask mesh.
-    // @ts-ignore
-    const mask = new Mesh(faceGeometry, material);
-    mask.position.set(0,0,30)
-    mask.scale.set(100,100,100)
-    mask.receiveShadow = mask.castShadow = true;
-    console.log('face',mask)
-    this.scene.add(mask);
-    
-       // @ts-ignore
-    console.log(window.facemesh)
+      }
+      return b.videoName !== userName
+    })
   }
-  adjustBrightness(type:string){
-    if(type==='brighter'){
-
+  adjustBrightness(type: string) {
+    if (type === 'brighter') {
+      console.log('亮一点')
+      this.renderer.toneMappingExposure += 0.1
+    } else {
+      console.log('暗一点')
+      this.renderer.toneMappingExposure -= 0.1
     }
   }
+
+  startLove() {
+    const heart = this.heart.clone();
+    this.scene.add(heart)
+
+    const position = new Vector3(-20, 24, -18);
+    const mid = new Vector3(-32, 36, -10);
+    const target = new Vector3(-38, 24, 0);
+    const curve = new QuadraticBezierCurve3(
+      position,
+      mid,
+      target
+    )
+    const points = curve.getPoints(50);
+    function animate(points: Vector3[]) {
+      let i = 0;
+      let tween1;
+      let tweens = points.map((point, index, arr) => {
+        if (index < points.length - 2) {
+          let t = new TWEEN.Tween(point).to(arr[index + 1], 10);
+          t.onUpdate((p) => {
+            heart.position.set(p.x, p.y, p.z);
+          })
+          return t
+        }
+
+      });
+
+      tweens.pop()
+      console.log(tweens, 998)
+      for (let i = 0; i < points.length - 1; i++) {
+        if (tweens[i + 1] && tweens[i])
+          //@ts-ignore
+          tweens[i].chain(tweens[i + 1] as TWEEN.Tween<Vector3>)
+      }
+      //@ts-ignore
+      return tweens[0]
+    }
+    let t = animate(points);
+
+    t?.start()
+    // var tween = new TWEEN.Tween(position).to(target);
+    // tween.easing(TWEEN.Easing.Elastic.InOut)
+    // let i=0;
+    // tween.onUpdate(()=>{
+    // console.log('up')  ;
+    // i++;
+    // let p=points[i%49]
+    //   heart.position.set(p.x,p.y,p.z);
+    // })
+    // tween.start()
+
+    // for ( let i = 0; i < 200; i ++ ) {
+
+    //   const object = heart.clone();
+
+    //   object.position.x = Math.random() * 40 -20;
+    //   object.position.y = Math.random() * 20+20;
+    //   object.position.z = Math.random() * 30 -10;
+
+    //   object.userData.velocity = new Vector3();
+    //   object.userData.velocity.x = Math.random() * 0.01 - 0.005;
+    //   object.userData.velocity.y = Math.random() * 0.01 - 0.005;
+    //   object.userData.velocity.z = Math.random() * 0.01 - 0.005;
+
+    //   this.scene.add( object );
+
+    // }
+  }
+  loadLove() {
+    const loader: GLTFLoader = new GLTFLoader()
+
+    loader.load('/models/heart_in_love/scene.gltf', (gltf) => {
+
+      // this.mixer= new AnimationMixer(gltf.scene)
+      // var action=this.mixer.clipAction(gltf.animations[0])
+      // // action.timeScale=0.8
+      // action.time=4
+      gltf.scene.traverse((object) => {
+        if ((object as Mesh).isMesh) {
+          // 修改模型的材质
+          object.castShadow = true;
+          object.frustumCulled = false;
+          // object.receiveShadow = true;
+
+          (object as any).material.emissive = (object as any).material.color;
+          (object as any).material.emissiveMap = (object as any).material.map;
+        }
+      })
+      gltf.scene.receiveShadow = true
+      this.heart = gltf.scene
+      // this.scene.add(gltf.scene)
+      // gltf.scene.position.set(30, 30, 30)
+      gltf.scene.scale.set(0.01, 0.01, 0.01)
+    }, () => { }, (e) => { console.log("error", e) })
+  }
+
   disableControls() {
     this.controls.enabled = false
   }
   enableControls() {
     this.controls.enabled = true
   }
-}
-function dumpObject(obj: Object3D, lines: Array<String> = [], isLast = true, prefix = '') {
-  const localPrefix = isLast ? '└─' : '├─';
-  lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
-  const newPrefix = prefix + (isLast ? '  ' : '│ ');
-  const lastNdx = obj.children.length - 1;
-  obj.children.forEach((child, ndx) => {
-    const isLast = ndx === lastNdx;
-    dumpObject(child, lines, isLast, newPrefix);
-  });
-  return lines;
 }
