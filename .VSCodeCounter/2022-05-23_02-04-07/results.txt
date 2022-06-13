@@ -1,0 +1,133 @@
+Date : 2022-05-23 02:04:07
+Directory : /home/malf/code/3d-conference-room
+Total : 73 files,  20214 codes, 188 comments, 379 blanks, all 20781 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |         26 |     17,555 |          0 |          5 |     17,560 |
+| TypeScript         |         20 |      1,057 |        102 |        162 |      1,321 |
+| CSS                |          9 |        733 |          6 |        104 |        843 |
+| TypeScript React   |          9 |        645 |         31 |         81 |        757 |
+| JavaScript         |          4 |        149 |         26 |         21 |        196 |
+| HTML               |          2 |         44 |         23 |          3 |         70 |
+| JSON with Comments |          1 |         26 |          0 |          1 |         27 |
+| Markdown           |          1 |          4 |          0 |          2 |          6 |
+| XML                |          1 |          1 |          0 |          0 |          1 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                         | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                            |         73 |     20,214 |        188 |        379 |     20,781 |
+| client                                                                                                       |         71 |     19,500 |        166 |        357 |     20,023 |
+| client/build                                                                                                 |         17 |        309 |          5 |          1 |        315 |
+| client/build/fd_models                                                                                       |          8 |          8 |          0 |          0 |          8 |
+| client/build/models                                                                                          |          2 |        242 |          0 |          0 |        242 |
+| client/build/models/sprite                                                                                   |          2 |        242 |          0 |          0 |        242 |
+| client/build/static                                                                                          |          4 |          4 |          5 |          0 |          9 |
+| client/build/static/css                                                                                      |          1 |          1 |          1 |          0 |          2 |
+| client/build/static/js                                                                                       |          3 |          3 |          4 |          0 |          7 |
+| client/public                                                                                                |         12 |        309 |         23 |          4 |        336 |
+| client/public/fd_models                                                                                      |          8 |          8 |          0 |          0 |          8 |
+| client/public/models                                                                                         |          2 |        242 |          0 |          0 |        242 |
+| client/public/models/sprite                                                                                  |          2 |        242 |          0 |          0 |        242 |
+| client/src                                                                                                   |         38 |      2,435 |        138 |        347 |      2,920 |
+| client/src/components                                                                                        |         10 |        512 |          8 |         61 |        581 |
+| client/src/components/ChatBox                                                                                |          4 |        307 |          5 |         34 |        346 |
+| client/src/components/ChatBox/TextMsgBox                                                                     |          2 |         67 |          0 |          6 |         73 |
+| client/src/components/ParticipantsList                                                                       |          2 |         28 |          0 |          2 |         30 |
+| client/src/components/Tips                                                                                   |          2 |         65 |          0 |          4 |         69 |
+| client/src/components/ToggleBtn                                                                              |          2 |        112 |          3 |         21 |        136 |
+| client/src/modules                                                                                           |         16 |      1,019 |         94 |        156 |      1,269 |
+| client/src/modules/FaceAPI                                                                                   |          1 |        111 |          1 |         10 |        122 |
+| client/src/modules/HandAPI                                                                                   |          2 |         96 |         27 |         11 |        134 |
+| client/src/modules/RTCEngine                                                                                 |          2 |        228 |         18 |         32 |        278 |
+| client/src/modules/Socket                                                                                    |          1 |          3 |          1 |          0 |          4 |
+| client/src/modules/TEngine                                                                                   |          6 |        504 |         46 |         95 |        645 |
+| client/src/modules/VoiceControlAPI                                                                           |          1 |         50 |          1 |          2 |         53 |
+| client/src/routes                                                                                            |          1 |          7 |          0 |          0 |          7 |
+| server                                                                                                       |          2 |        714 |         22 |         22 |        758 |
++--------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                     | language           | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /home/malf/code/3d-conference-room/client/README.md                                                          | Markdown           |          4 |          0 |          2 |          6 |
+| /home/malf/code/3d-conference-room/client/build/asset-manifest.json                                          | JSON               |         20 |          0 |          0 |         20 |
+| /home/malf/code/3d-conference-room/client/build/fd_models/age_gender_model-weights_manifest.json             | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/build/fd_models/face_expression_model-weights_manifest.json        | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/build/fd_models/face_landmark_68_model-weights_manifest.json       | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/build/fd_models/face_landmark_68_tiny_model-weights_manifest.json  | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/build/fd_models/face_recognition_model-weights_manifest.json       | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/build/fd_models/mtcnn_model-weights_manifest.json                  | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/build/fd_models/ssd_mobilenetv1_model-weights_manifest.json        | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/build/fd_models/tiny_face_detector_model-weights_manifest.json     | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/build/index.html                                                   | HTML               |         10 |          0 |          0 |         10 |
+| /home/malf/code/3d-conference-room/client/build/manifest.json                                                | JSON               |         25 |          0 |          1 |         26 |
+| /home/malf/code/3d-conference-room/client/build/models/sprite/sprite.json                                    | JSON               |         62 |          0 |          0 |         62 |
+| /home/malf/code/3d-conference-room/client/build/models/sprite/test.json                                      | JSON               |        180 |          0 |          0 |        180 |
+| /home/malf/code/3d-conference-room/client/build/static/css/main.f27455b8.chunk.css                           | CSS                |          1 |          1 |          0 |          2 |
+| /home/malf/code/3d-conference-room/client/build/static/js/2.952a81b2.chunk.js                                | JavaScript         |          1 |          2 |          0 |          3 |
+| /home/malf/code/3d-conference-room/client/build/static/js/main.05c245c0.chunk.js                             | JavaScript         |          1 |          1 |          0 |          2 |
+| /home/malf/code/3d-conference-room/client/build/static/js/runtime-main.3b4319c7.js                           | JavaScript         |          1 |          1 |          0 |          2 |
+| /home/malf/code/3d-conference-room/client/package-lock.json                                                  | JSON               |     16,358 |          0 |          1 |     16,359 |
+| /home/malf/code/3d-conference-room/client/package.json                                                       | JSON               |         59 |          0 |          1 |         60 |
+| /home/malf/code/3d-conference-room/client/public/fd_models/age_gender_model-weights_manifest.json            | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/public/fd_models/face_expression_model-weights_manifest.json       | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/public/fd_models/face_landmark_68_model-weights_manifest.json      | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/public/fd_models/face_landmark_68_tiny_model-weights_manifest.json | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/public/fd_models/face_recognition_model-weights_manifest.json      | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/public/fd_models/mtcnn_model-weights_manifest.json                 | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/public/fd_models/ssd_mobilenetv1_model-weights_manifest.json       | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/public/fd_models/tiny_face_detector_model-weights_manifest.json    | JSON               |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/public/index.html                                                  | HTML               |         34 |         23 |          3 |         60 |
+| /home/malf/code/3d-conference-room/client/public/manifest.json                                               | JSON               |         25 |          0 |          1 |         26 |
+| /home/malf/code/3d-conference-room/client/public/models/sprite/sprite.json                                   | JSON               |         62 |          0 |          0 |         62 |
+| /home/malf/code/3d-conference-room/client/public/models/sprite/test.json                                     | JSON               |        180 |          0 |          0 |        180 |
+| /home/malf/code/3d-conference-room/client/src/App.css                                                        | CSS                |        206 |          2 |         46 |        254 |
+| /home/malf/code/3d-conference-room/client/src/App.tsx                                                        | TypeScript React   |        352 |         19 |         45 |        416 |
+| /home/malf/code/3d-conference-room/client/src/Login.css                                                      | CSS                |        188 |          1 |         16 |        205 |
+| /home/malf/code/3d-conference-room/client/src/Login.tsx                                                      | TypeScript React   |         88 |          5 |          9 |        102 |
+| /home/malf/code/3d-conference-room/client/src/components/ChatBox/TextMsgBox/index.css                        | CSS                |         50 |          0 |          5 |         55 |
+| /home/malf/code/3d-conference-room/client/src/components/ChatBox/TextMsgBox/index.tsx                        | TypeScript React   |         17 |          0 |          1 |         18 |
+| /home/malf/code/3d-conference-room/client/src/components/ChatBox/index.css                                   | CSS                |        124 |          0 |         12 |        136 |
+| /home/malf/code/3d-conference-room/client/src/components/ChatBox/index.tsx                                   | TypeScript React   |        116 |          5 |         16 |        137 |
+| /home/malf/code/3d-conference-room/client/src/components/ParticipantsList/index.css                          | CSS                |         11 |          0 |          0 |         11 |
+| /home/malf/code/3d-conference-room/client/src/components/ParticipantsList/index.tsx                          | TypeScript React   |         17 |          0 |          2 |         19 |
+| /home/malf/code/3d-conference-room/client/src/components/Tips/index.css                                      | CSS                |         45 |          0 |          3 |         48 |
+| /home/malf/code/3d-conference-room/client/src/components/Tips/index.tsx                                      | TypeScript React   |         20 |          0 |          1 |         21 |
+| /home/malf/code/3d-conference-room/client/src/components/ToggleBtn/index.css                                 | CSS                |         96 |          2 |         20 |        118 |
+| /home/malf/code/3d-conference-room/client/src/components/ToggleBtn/index.tsx                                 | TypeScript React   |         16 |          1 |          1 |         18 |
+| /home/malf/code/3d-conference-room/client/src/index.css                                                      | CSS                |         12 |          0 |          2 |         14 |
+| /home/malf/code/3d-conference-room/client/src/index.tsx                                                      | TypeScript React   |         16 |          1 |          6 |         23 |
+| /home/malf/code/3d-conference-room/client/src/logo.svg                                                       | XML                |          1 |          0 |          0 |          1 |
+| /home/malf/code/3d-conference-room/client/src/modules/FaceAPI/FaceAPI.ts                                     | TypeScript         |        111 |          1 |         10 |        122 |
+| /home/malf/code/3d-conference-room/client/src/modules/HandAPI/HandAPI.ts                                     | TypeScript         |         43 |          7 |          4 |         54 |
+| /home/malf/code/3d-conference-room/client/src/modules/HandAPI/gesture.ts                                     | TypeScript         |         53 |         20 |          7 |         80 |
+| /home/malf/code/3d-conference-room/client/src/modules/RTCEngine/RTCEngine.ts                                 | TypeScript         |        208 |         18 |         29 |        255 |
+| /home/malf/code/3d-conference-room/client/src/modules/RTCEngine/RTCUtils.ts                                  | TypeScript         |         20 |          0 |          3 |         23 |
+| /home/malf/code/3d-conference-room/client/src/modules/Socket/index.ts                                        | TypeScript         |          3 |          1 |          0 |          4 |
+| /home/malf/code/3d-conference-room/client/src/modules/TEngine/TBasicObject.ts                                | TypeScript         |         79 |          3 |         14 |         96 |
+| /home/malf/code/3d-conference-room/client/src/modules/TEngine/TCanvasTextureEditor.ts                        | TypeScript         |         27 |          0 |          4 |         31 |
+| /home/malf/code/3d-conference-room/client/src/modules/TEngine/TEngine.ts                                     | TypeScript         |        351 |         42 |         57 |        450 |
+| /home/malf/code/3d-conference-room/client/src/modules/TEngine/THelper.ts                                     | TypeScript         |         13 |          1 |          7 |         21 |
+| /home/malf/code/3d-conference-room/client/src/modules/TEngine/TTextures.ts                                   | TypeScript         |         10 |          0 |          3 |         13 |
+| /home/malf/code/3d-conference-room/client/src/modules/TEngine/Tlights.ts                                     | TypeScript         |         24 |          0 |         10 |         34 |
+| /home/malf/code/3d-conference-room/client/src/modules/VoiceControlAPI/VCAPI.ts                               | TypeScript         |         50 |          1 |          2 |         53 |
+| /home/malf/code/3d-conference-room/client/src/modules/constant.ts                                            | TypeScript         |         12 |          0 |          6 |         18 |
+| /home/malf/code/3d-conference-room/client/src/modules/eventEmitter.tsx                                       | TypeScript React   |          3 |          0 |          0 |          3 |
+| /home/malf/code/3d-conference-room/client/src/modules/randomName.ts                                          | TypeScript         |         12 |          0 |          0 |         12 |
+| /home/malf/code/3d-conference-room/client/src/react-app-env.d.ts                                             | TypeScript         |          0 |          1 |          1 |          2 |
+| /home/malf/code/3d-conference-room/client/src/reportWebVitals.ts                                             | TypeScript         |         13 |          0 |          3 |         16 |
+| /home/malf/code/3d-conference-room/client/src/routes/index.ts                                                | TypeScript         |          7 |          0 |          0 |          7 |
+| /home/malf/code/3d-conference-room/client/src/setupTests.ts                                                  | TypeScript         |          1 |          4 |          1 |          6 |
+| /home/malf/code/3d-conference-room/client/src/utils.ts                                                       | TypeScript         |         20 |          3 |          1 |         24 |
+| /home/malf/code/3d-conference-room/client/tsconfig.json                                                      | JSON with Comments |         26 |          0 |          1 |         27 |
+| /home/malf/code/3d-conference-room/server/package-lock.json                                                  | JSON               |        568 |          0 |          1 |        569 |
+| /home/malf/code/3d-conference-room/server/server.js                                                          | JavaScript         |        146 |         22 |         21 |        189 |
+| Total                                                                                                        |                    |     20,214 |        188 |        379 |     20,781 |
++--------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

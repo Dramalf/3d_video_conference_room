@@ -13,7 +13,7 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <link rel="prefetch" href="%PUBLIC_URL%/models/table/scene.bin">
+  <link rel="prefetch" href="%PUBLIC_URL%/models/table/scene.bin"/>
   <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -52,9 +52,6 @@
       gl_FragColor = vec4(clean?0.0:sample.r,clean?0.0: sample.g,clean?0.0:  sample.b, clean  ? 0.0 : 1.0);
     }
   </script>
-<script src="https://cdn.bootcss.com/vConsole/3.3.0/vconsole.min.js"></script>
-<script>
-  var vConsole = new VConsole();
-</script>
+
 
 </html>

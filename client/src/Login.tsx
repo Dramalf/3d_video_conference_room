@@ -92,6 +92,9 @@ function Login() {
         <img src="/viewfile.png" alt="#" />
 
       </div>
+      <div className="icp">
+      <a href="https://beian.miit.gov.cn/" target="_blank">湘ICP备2022006815号</a>
+      </div>
     </div>
   )
 }

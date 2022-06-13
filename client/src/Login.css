@@ -139,7 +139,14 @@ h1,h2,h3,h4,h5,h6{margin: 0px; padding: 0px;}
 	90%{
 		text-shadow:0px 0px 0 rgb(250, 227, 46), -1px 1px 0 rgb(108, 175, 19),-2px 2px 1px rgba(218, 235, 111, 0.05),-2px 2px 1px rgba(233, 233, 21, 0.5),0px 0px 1px rgba(0,0,0,.2);	}
 }
-
+.icp{
+	position: fixed;
+	bottom: 0px;
+}
+.icp a{
+	text-decoration:none;
+	
+}
 @media screen and (max-width: 900px){
 	.login-wrapper{
 		height: 70vh;

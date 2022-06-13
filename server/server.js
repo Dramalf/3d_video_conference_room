@@ -14,6 +14,8 @@
 //     }
 //   })
 
+const { Console } = require("console");
+
 const io = require("socket.io")(8080, {
   cors: {
     origin: ["http://localhost:3000"]
@@ -32,6 +34,7 @@ const SERVER_USER_EVENT_UPDATE_USERS = 'SERVER_USER_EVENT_UPDATE_USERS';
 
 const CLIENT_USER_EVENT_SEND_MESSAGE = "CLIENT_USER_EVENT_SEND_MESSAGE"
 const SERVER_USER_EVENT_BROADCAST_MESSAGE='SERVER_USER_EVENT_BROADCAST_MESSAGE';
+const CLIENT_USER_EVENT_INTERACTION='CLIENT_USER_EVENT_INTERACTION';
 function getOnlineUsers() {
   let arr=connectionList.map(connection => {
     const { userName, roomID } = connection
@@ -68,13 +71,6 @@ function broadcastTextMsg(socket,payload){
 }
 io.on("connection", socket => {
   const id = socket.id
-  // socket.emit("FIRSTASKLIST",{
-  //   onlineUsers: getOnlineUsers(),
-  //   newEnterUserName: ""
-  // })
-  var address=socket.request.connection.remoteAddress;
-
-  console.log('new connection from'+address)
   socket.on('ASK_LIST',()=>{
     // console.log('send online users list')
     // socket.emit("FIRSTASKLIST",{
@@ -108,6 +104,13 @@ io.on("connection", socket => {
     else if (type === CLIENT_USER_EVENT_SEND_MESSAGE) {
       broadcastTextMsg(socket,payload)
       console.log('broadcast',connectionList)
+    }else if(type===CLIENT_USER_EVENT_INTERACTION){
+      const {from,to}=msg.payload;
+      let socket=findSocketByUserName(to);
+      if(socket!=='not find'){
+        
+        socket.emit('INTERACTION_EVENT',from);
+      }
     }
   })
 
@@ -136,6 +139,18 @@ io.on("connection", socket => {
       }
     })
     return userName
+  }
+  function findSocketByUserName(name) {
+    let socket ='not find';
+    console.log(connectionList)
+    connectionList.some(connection => {
+     // console.log('111',connection.userName, name)
+      if (connection.userName === name) {
+        socket = connection.socket
+        return true
+      }
+    })
+    return socket
   }
   function userLeaveRoom(socket){
     connectionList=connectionList.filter(c=>{

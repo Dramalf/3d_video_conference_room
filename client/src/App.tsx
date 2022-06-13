@@ -4,6 +4,7 @@ import ee from './modules/eventEmitter'
 import './App.css';
 import ChatBox from "./components/ChatBox"
 import Tips from './components/Tips';
+import ToggleBtn from './components/ToggleBtn';
 import ParticipantsList from './components/ParticipantsList';
 import { TEngine } from "./modules/TEngine/TEngine"
 import { FaceAPI } from './modules/FaceAPI/FaceAPI';
@@ -19,7 +20,7 @@ import { RTCEngine } from './modules/RTCEngine/RTCEngine';
 import {
   CLIENT_RTC_EVENT,
   SERVER_RTC_EVENT,
-
+  CLIENT_USER_EVENT_INTERACTION,
   CLIENT_USER_EVENT,
   SERVER_USER_EVENT,
   CLIENT_USER_EVENT_LOGIN,
@@ -55,7 +56,7 @@ function App() {
       let client = new RTCEngine(socket, ee);
       client.onnewuserenterroom = (e: any) => {
         console.log('有人来了', e);
-        setParticipantsList(e.onlineUsers.map((u:any)=>u.userName))
+        setParticipantsList(e.onlineUsers.map((u: any) => u.userName))
       }
       client.onnewvideoloaded = (e: any) => {
         console.log('视频准备好了', e)
@@ -65,10 +66,13 @@ function App() {
       client.onuserleaveroom = (e: any) => {
         ee.emit('USER_LEAVE', e);
       }
+      client.onuserinteraction=(e:any)=>{
+        ee.emit('START_LOVE',e);
+      }
       await new Promise((resolve, reject) => {
-        if (isAudience) { 
+        if (isAudience) {
           (document.querySelector('.tips-wrapper') as HTMLDivElement).style.display = 'none';
-          resolve(0); 
+          resolve(0);
         }
         else {
           (document.querySelector('.tips-enter-btn') as HTMLDivElement).onclick = () => {
@@ -85,16 +89,16 @@ function App() {
   }, [])
   async function createLocalVideo() {
     try {
-      await humanseg.load();
+      await humanseg.load(true, true);
     } catch (error) {
-      console.log(error)
+      console.log('in humanseg', error)
     }
     const mediastream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true
     });
-    let w=mediastream.getVideoTracks()[0].getSettings().width as number/2;
-    let h=mediastream.getVideoTracks()[0].getSettings().height as number/2;
+    let w = mediastream.getVideoTracks()[0].getSettings().width as number / 2;
+    let h = mediastream.getVideoTracks()[0].getSettings().height as number / 2;
     const hc = document.createElement('canvas');
     hc.width = w;
     hc.height = h;
@@ -117,7 +121,7 @@ function App() {
     local_video.play();
     segment_video.srcObject = hc.captureStream();
     segment(local_video, hc, mc, bc, () => { });
-
+    ee.emit("LOCAL_VIDEO",local_video)
     segment_video.onloadeddata = () => {
       console.log('seg loaded')
       segment_video.play();
@@ -128,6 +132,12 @@ function App() {
 
   function cleanGreen(v: HTMLVideoElement, rv: HTMLVideoElement) {
     const displayCanvasEl = document.createElement('canvas');
+    const c=document.createElement('canvas');
+    c.width=320;
+    c.height=240;
+    // displayCanvasEl.classList.add('test')
+   // rv.srcObject=c.captureStream();
+    // document.body.appendChild(displayCanvasEl)
     rv.srcObject = displayCanvasEl.captureStream();
     const gl = displayCanvasEl.getContext("webgl") as WebGLRenderingContext;
     const vs = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;
@@ -172,9 +182,13 @@ function App() {
       gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
       //@ts-ignore
       v.requestVideoFrameCallback(processFrame);
+      //c.getContext('2d')?.clearRect(0,0,320,240)
+       //c.getContext('2d')?.drawImage(v,0,0);
+     
     }
     //@ts-ignore
     v.requestVideoFrameCallback(processFrame);
+
     console.log('执行了')
   }
 
@@ -193,8 +207,18 @@ function App() {
     TE.addObject(...LightsList)
     TE.addObject(...helperList)
     TE.loadLove()
-    ee.on("START_LOVE", () => {
-      TE.startLove()
+    ee.on("TRIGGER_GESTURE", () => {
+     
+      let targetName=TE.getCentralUser();
+      targetName&&TE.startLove("&&SELF",targetName)
+      let msg={
+        type:CLIENT_USER_EVENT_INTERACTION,
+        payload:{
+          from:userName,
+          to:targetName
+        }
+      }
+      targetName&&socket.emit(CLIENT_USER_EVENT,JSON.stringify(msg))
     })
 
     ee.on("CHANGE_SCENE", (url: string) => {
@@ -204,8 +228,13 @@ function App() {
       TE.adjustBrightness(type)
     })
     ee.on('USER_LEAVE', (leaveName: string) => {
-      console.log('996', leaveName)
       TE.removeUserVideo(leaveName);
+    })
+    ee.on('SWITCH_VR',(vr:boolean)=>{
+      TE.switchVRview(vr);
+    })
+    ee.on("START_LOVE",(from:string)=>{
+      TE.startLove(from,userName);
     })
     ee.on("VIDEO_READY", (video: HTMLVideoElement, name: string) => {
       //       const canvas = document.createElement('canvas');
@@ -214,12 +243,6 @@ function App() {
       resultVideo.width = video.width;
       resultVideo.muted = true;
       resultVideo.height = video.height;
-      //       canvas.width=640;
-      // canvas.height=480;
-      //       // blurBackground(video, canvas)
-      //       // v.srcObject = canvas.captureStream()
-
-      //       v.srcObject=canvas.captureStream();
       cleanGreen(video, resultVideo);
       resultVideo.onloadeddata = () => {
         resultVideo.play()
@@ -258,13 +281,17 @@ function App() {
 
   //手势识别
   useEffect(() => {
-    return
-    ee.on("LOCAL_VIDEO", async (video: HTMLVideoElement, canvas: HTMLCanvasElement) => {
-      const hd = new HandAPI();
+    let hd=new HandAPI();
+    ee.on("LOCAL_VIDEO", async (video: HTMLVideoElement) => {
+    
       (await hd.createDetector()).bindVideo(video).onDetect(() => {
-        ee.emit("START_LOVE")
+        ee.emit("TRIGGER_GESTURE")
+        console.log('***&&&')
       })
 
+    })
+    ee.on('SWITCH_DETECT',(e:boolean)=>{
+      hd.enable=e
     })
   }, [])
 
@@ -273,6 +300,7 @@ function App() {
       try {
         const { data } = await humanseg.getGrayValue(video);
         humanseg.drawHumanSeg(data, humanCanvas);
+
         // humanseg.drawMask(data,maskCanvas,backgroundCanvas);
         // cb(data)
       } catch (error) {
@@ -281,6 +309,8 @@ function App() {
 
       requestAnimationFrame(cutout)
     }
+    // document.body.appendChild(humanCanvas);
+    humanCanvas.classList.add('testa')
     cutout()
   }
 
@@ -308,11 +338,20 @@ function App() {
               }
             </div>
 
-
+          </div>
+          <div className='header-item'>
+            <ToggleBtn l={'VR'} r={"2d"} onToggle={(vr:any)=>{
+              ee.emit('SWITCH_VR',vr)
+            }}/>
+          </div>
+          <div className='header-item'>
+            <ToggleBtn l={'🤞🏿'} r={"🚫"} onToggle={(e:any)=>{
+              ee.emit('SWITCH_DETECT',e)
+            }}/>
           </div>
         </div>
         <div className="conference-body-wrapper mask" data-loadinfo="三维会议室加载中">
-          <Tips></Tips>
+          <Tips ></Tips>
           <div className="conference-webgl-wrapper"></div>
 
         </div>

@@ -34,6 +34,7 @@ export class RTCEngine {
   public onnewuserenterroom: any
   public onnewvideoloaded:any
   public onuserleaveroom:any
+  public onuserinteraction:any
   constructor(socket: Socket, ee: any) {
     // this.userName = userName;
     this.ee = ee;
@@ -49,6 +50,10 @@ export class RTCEngine {
     socket.on('user_leave',(leaveName:string)=>{
       console.log('in rtc ')
       this.onuserleaveroom&&this.onuserleaveroom(leaveName)
+    })
+    socket.on('INTERACTION_EVENT',(from:string)=>{
+      console.log(from,'shoot')
+      this.onuserinteraction&& this.onuserinteraction(from)
     })
     socket.on(SERVER_USER_EVENT, (msg) => {
       const { type, payload } = msg
@@ -131,7 +136,7 @@ export class RTCEngine {
 
       const offer = await pc.createOffer();
       await pc.setLocalDescription(offer); // TODO 错误处理
-
+console.log(pc.localDescription,'996 sdp')
       this.sendRTCEvent({
         type: SIGNALING_OFFER,
         payload: {

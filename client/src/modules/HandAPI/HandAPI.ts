@@ -6,6 +6,7 @@ export class HandAPI {
     private handDetector!: handPoseDetection.HandDetector;
     private detectVideo!: HTMLVideoElement;
     private gestureRecognition = new GestureRecognition()
+    public enable=false;
     async createDetector() {
         console.log(this.gestureRecognition)
         const model = handPoseDetection.SupportedModels.MediaPipeHands;
@@ -24,6 +25,9 @@ export class HandAPI {
     }
     onDetect(cb=()=>{}) {
          setInterval(async () => {
+             if(!this.enable){
+                return 
+             }
             let hands = await this.handDetector.estimateHands(this.detectVideo);
             if (hands[0]) {
                 // console.log('3d996',hands[0].keypoints3D![4],hands[0].keypoints3D![8])
@@ -45,6 +49,6 @@ export class HandAPI {
             //     console.log(norhand,norgesture)
             //     this.gestureRecognition.calcCorrelation(norhand,norgesture)
             //    })
-        }, 10)
+        }, 30)
     }
 }

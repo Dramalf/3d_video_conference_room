@@ -11,6 +11,7 @@ import {
   MeshStandardMaterial,
   PerspectiveCamera,
   Scene,
+  Vector2,
   Vector3,
   WebGLRenderer,
   MOUSE,
@@ -38,7 +39,6 @@ import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonCont
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
-import { FaceMeshFaceGeometry } from "./js/face.js";
 import { ambientLight } from './Tlights'
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 
@@ -49,14 +49,16 @@ export class TEngine {
   private mixer: AnimationMixer | undefined
   private pmremGenerator: PMREMGenerator
   private scene: Scene
+  private raycaster:Raycaster
   private camera: PerspectiveCamera
   private ambientLight: AmbientLight
   private clock: Clock
+  private centralpoint=new Vector2(0,0)
   private controls: FirstPersonControls | OrbitControls
   private seatsPosition = [{
-    x: -38,
+   x: 0,
     y: 29,
-    z: 0
+    z: 20
   }, {
     x: -20,
     y: 29,
@@ -74,24 +76,17 @@ export class TEngine {
     y: 29,
     z: 0
   }, {
-    x: 26,
+       x: -38,
     y: 29,
-    z: 20
-  }, {
-    x: 0,
-    y: 29,
-    z: 20
-  }, {
-    x: -20,
-    y: 29,
-    z: 20
-  },
+    z: 0
+  }
 
   ]
 
   private userVideoBoxes: Array<{ object: any, videoName: any }> = []
   private model!: Group
   private heart!: Group
+  private VRviewBody: Object3D
   private newEnterIndex = 0
   stats: Stats
   constructor(dom: HTMLElement, enableVR = false, browserType: string) {
@@ -99,7 +94,7 @@ export class TEngine {
     this.renderer = new WebGLRenderer({
       antialias: true
     })
-    this.renderer.xr.enabled=true;
+    this.renderer.xr.enabled = true;
     this.clock = new Clock()
     this.renderer.shadowMap.enabled = true;
     this.renderer.toneMapping = LinearToneMapping
@@ -110,8 +105,10 @@ export class TEngine {
     pmremGenerator.compileEquirectangularShader();
     this.pmremGenerator = pmremGenerator;
     const scene = this.scene;
-  const body=new Object3D();
+    const body = new Object3D();
 
+    body.position.set(0, 28, 0);
+    this.VRviewBody = body;
     new RGBELoader()
       .setDataType(UnsignedByteType)
       .load('/texture/autumn_forest_04_1k.hdr', function (texture) {
@@ -125,9 +122,8 @@ export class TEngine {
 
     this.camera = new PerspectiveCamera(60, dom.offsetWidth / dom.offsetHeight, 1, 1000)
 
-    body.add(this.camera)
+    
 
-body.position.set(0,28,0);
     this.renderer.setSize(dom.offsetWidth, dom.offsetHeight, true)
 
     // 初始性能监视器
@@ -166,14 +162,14 @@ body.position.set(0,28,0);
 
     this.controls = controls
 
-    this.controls.object.position.set(-38, 28, 0)
+    this.controls.object.position.set(0, 28, 20)
     this.controls.object.lookAt(new Vector3(0, 0, 0))
 
     this.camera.up = new Vector3(0, 1, 0)
     //@ts-ignore
     useorbit && this.controls.update();
-   
-
+    const raycaster = new Raycaster();
+    this.raycaster=raycaster;
     const onWindowResize = () => {
 
       this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -196,8 +192,8 @@ body.position.set(0,28,0);
     //this.renderid=requestAnimationFrame(this.renderFun);
 
     this.renderer.setAnimationLoop(() => {
-      !useorbit&&this.controls.update(this.clock.getDelta())
-      useorbit&&(this.controls as OrbitControls).update()
+      !useorbit && this.controls.update(this.clock.getDelta())
+      useorbit && (this.controls as OrbitControls).update()
       this.renderer.render(this.scene, this.camera)
       stats.update()
       TWEEN.update();
@@ -208,7 +204,7 @@ body.position.set(0,28,0);
 
     dom.appendChild(this.renderer.domElement)
     dom.appendChild(statsDom)
-    dom.appendChild( VRButton.createButton( this.renderer ) )
+    dom.appendChild(VRButton.createButton(this.renderer))
   }
 
   loadRoom(cb = () => { }) {
@@ -241,7 +237,26 @@ body.position.set(0,28,0);
     }, () => { }, (e) => { console.log("error", e) })
 
   }
+  switchVRview(vr:boolean){
+    if(vr){
+      this.VRviewBody.add(this.camera)
+    }else{
+      this.VRviewBody.remove(this.camera)
+    }
+    
+  }
+  getCentralUser(){
+   
+    this.raycaster.setFromCamera(this.centralpoint,this.camera);
+    const intersects = this.raycaster.intersectObjects( this.scene.children );
+    let targetName;
+    for ( let i = 0; i < intersects.length; i ++ ) {
+      targetName=intersects[i].object.name
+    }
+    return targetName
+  
 
+  }
   load_sprite() {
     const loader = new ObjectLoader()
     console.log('120')
@@ -302,7 +317,7 @@ body.position.set(0,28,0);
     })
     material.needsUpdate = true
     const box = new Mesh(geometry, material)
-
+    box.name=userName
     const { x, y, z } = this.seatsPosition[this.newEnterIndex]
     this.newEnterIndex++;
     box.position.set(x, y, z)
@@ -339,19 +354,30 @@ body.position.set(0,28,0);
     }
   }
 
-  startLove() {
+  startLove(from:string,to:string) {
     const heart = this.heart.clone();
     this.scene.add(heart)
+   
+    let position = this.userVideoBoxes.find(b=>b.videoName===from)?.object.position.clone()
 
-    const position = new Vector3(-20, 24, -18);
-    const mid = new Vector3(-32, 36, -10);
-    const target = new Vector3(-38, 24, 0);
+   let target = this.userVideoBoxes.find(b=>b.videoName===to)?.object.position.clone()
+   if(from==="&&SELF"){
+    position=this.camera.position.clone()
+   } 
+   if(!position||!target)return
+   position.y=24;
+   target.y=24;
+   const mid = new Vector3(position.x/2-target.x/2-2, 32, position.z/2-target.z/2-6);
+    //   x: -38,
+    // y: 29,
+    // z: 0
     const curve = new QuadraticBezierCurve3(
       position,
       mid,
       target
     )
     const points = curve.getPoints(50);
+    let scene=this.scene;
     function animate(points: Vector3[]) {
       let i = 0;
       let tween1;
@@ -362,12 +388,17 @@ body.position.set(0,28,0);
             heart.position.set(p.x, p.y, p.z);
           })
           return t
+        }else if(index===points.length-2){
+          let t= new TWEEN.Tween(point).to(arr[index + 1], 10);
+          t.onUpdate(()=>{
+            scene.remove(heart)
+          })
+          return t
         }
 
       });
 
       tweens.pop()
-      console.log(tweens, 998)
       for (let i = 0; i < points.length - 1; i++) {
         if (tweens[i + 1] && tweens[i])
           //@ts-ignore
@@ -379,33 +410,6 @@ body.position.set(0,28,0);
     let t = animate(points);
 
     t?.start()
-    // var tween = new TWEEN.Tween(position).to(target);
-    // tween.easing(TWEEN.Easing.Elastic.InOut)
-    // let i=0;
-    // tween.onUpdate(()=>{
-    // console.log('up')  ;
-    // i++;
-    // let p=points[i%49]
-    //   heart.position.set(p.x,p.y,p.z);
-    // })
-    // tween.start()
-
-    // for ( let i = 0; i < 200; i ++ ) {
-
-    //   const object = heart.clone();
-
-    //   object.position.x = Math.random() * 40 -20;
-    //   object.position.y = Math.random() * 20+20;
-    //   object.position.z = Math.random() * 30 -10;
-
-    //   object.userData.velocity = new Vector3();
-    //   object.userData.velocity.x = Math.random() * 0.01 - 0.005;
-    //   object.userData.velocity.y = Math.random() * 0.01 - 0.005;
-    //   object.userData.velocity.z = Math.random() * 0.01 - 0.005;
-
-    //   this.scene.add( object );
-
-    // }
   }
   loadLove() {
     const loader: GLTFLoader = new GLTFLoader()

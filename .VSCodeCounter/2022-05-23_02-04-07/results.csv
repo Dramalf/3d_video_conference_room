@@ -1,0 +1,75 @@
+"filename", "language", "JSON", "JSON with Comments", "TypeScript", "Markdown", "CSS", "TypeScript React", "HTML", "XML", "JavaScript", "comment", "blank", "total"
+"/home/malf/code/3d-conference-room/client/README.md", "Markdown", 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/malf/code/3d-conference-room/client/build/asset-manifest.json", "JSON", 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20
+"/home/malf/code/3d-conference-room/client/build/fd_models/age_gender_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/build/fd_models/face_expression_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/build/fd_models/face_landmark_68_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/build/fd_models/face_landmark_68_tiny_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/build/fd_models/face_recognition_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/build/fd_models/mtcnn_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/build/fd_models/ssd_mobilenetv1_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/build/fd_models/tiny_face_detector_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/build/index.html", "HTML", 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 10
+"/home/malf/code/3d-conference-room/client/build/manifest.json", "JSON", 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 26
+"/home/malf/code/3d-conference-room/client/build/models/sprite/sprite.json", "JSON", 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62
+"/home/malf/code/3d-conference-room/client/build/models/sprite/test.json", "JSON", 180, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 180
+"/home/malf/code/3d-conference-room/client/build/static/css/main.f27455b8.chunk.css", "CSS", 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 2
+"/home/malf/code/3d-conference-room/client/build/static/js/2.952a81b2.chunk.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 3
+"/home/malf/code/3d-conference-room/client/build/static/js/main.05c245c0.chunk.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2
+"/home/malf/code/3d-conference-room/client/build/static/js/runtime-main.3b4319c7.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2
+"/home/malf/code/3d-conference-room/client/package-lock.json", "JSON", 16358, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 16359
+"/home/malf/code/3d-conference-room/client/package.json", "JSON", 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 60
+"/home/malf/code/3d-conference-room/client/public/fd_models/age_gender_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/public/fd_models/face_expression_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/public/fd_models/face_landmark_68_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/public/fd_models/face_landmark_68_tiny_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/public/fd_models/face_recognition_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/public/fd_models/mtcnn_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/public/fd_models/ssd_mobilenetv1_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/public/fd_models/tiny_face_detector_model-weights_manifest.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/public/index.html", "HTML", 0, 0, 0, 0, 0, 0, 34, 0, 0, 23, 3, 60
+"/home/malf/code/3d-conference-room/client/public/manifest.json", "JSON", 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 26
+"/home/malf/code/3d-conference-room/client/public/models/sprite/sprite.json", "JSON", 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62
+"/home/malf/code/3d-conference-room/client/public/models/sprite/test.json", "JSON", 180, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 180
+"/home/malf/code/3d-conference-room/client/src/App.css", "CSS", 0, 0, 0, 0, 206, 0, 0, 0, 0, 2, 46, 254
+"/home/malf/code/3d-conference-room/client/src/App.tsx", "TypeScript React", 0, 0, 0, 0, 0, 352, 0, 0, 0, 19, 45, 416
+"/home/malf/code/3d-conference-room/client/src/Login.css", "CSS", 0, 0, 0, 0, 188, 0, 0, 0, 0, 1, 16, 205
+"/home/malf/code/3d-conference-room/client/src/Login.tsx", "TypeScript React", 0, 0, 0, 0, 0, 88, 0, 0, 0, 5, 9, 102
+"/home/malf/code/3d-conference-room/client/src/components/ChatBox/TextMsgBox/index.css", "CSS", 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 5, 55
+"/home/malf/code/3d-conference-room/client/src/components/ChatBox/TextMsgBox/index.tsx", "TypeScript React", 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 1, 18
+"/home/malf/code/3d-conference-room/client/src/components/ChatBox/index.css", "CSS", 0, 0, 0, 0, 124, 0, 0, 0, 0, 0, 12, 136
+"/home/malf/code/3d-conference-room/client/src/components/ChatBox/index.tsx", "TypeScript React", 0, 0, 0, 0, 0, 116, 0, 0, 0, 5, 16, 137
+"/home/malf/code/3d-conference-room/client/src/components/ParticipantsList/index.css", "CSS", 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 11
+"/home/malf/code/3d-conference-room/client/src/components/ParticipantsList/index.tsx", "TypeScript React", 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 2, 19
+"/home/malf/code/3d-conference-room/client/src/components/Tips/index.css", "CSS", 0, 0, 0, 0, 45, 0, 0, 0, 0, 0, 3, 48
+"/home/malf/code/3d-conference-room/client/src/components/Tips/index.tsx", "TypeScript React", 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 1, 21
+"/home/malf/code/3d-conference-room/client/src/components/ToggleBtn/index.css", "CSS", 0, 0, 0, 0, 96, 0, 0, 0, 0, 2, 20, 118
+"/home/malf/code/3d-conference-room/client/src/components/ToggleBtn/index.tsx", "TypeScript React", 0, 0, 0, 0, 0, 16, 0, 0, 0, 1, 1, 18
+"/home/malf/code/3d-conference-room/client/src/index.css", "CSS", 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 2, 14
+"/home/malf/code/3d-conference-room/client/src/index.tsx", "TypeScript React", 0, 0, 0, 0, 0, 16, 0, 0, 0, 1, 6, 23
+"/home/malf/code/3d-conference-room/client/src/logo.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1
+"/home/malf/code/3d-conference-room/client/src/modules/FaceAPI/FaceAPI.ts", "TypeScript", 0, 0, 111, 0, 0, 0, 0, 0, 0, 1, 10, 122
+"/home/malf/code/3d-conference-room/client/src/modules/HandAPI/HandAPI.ts", "TypeScript", 0, 0, 43, 0, 0, 0, 0, 0, 0, 7, 4, 54
+"/home/malf/code/3d-conference-room/client/src/modules/HandAPI/gesture.ts", "TypeScript", 0, 0, 53, 0, 0, 0, 0, 0, 0, 20, 7, 80
+"/home/malf/code/3d-conference-room/client/src/modules/RTCEngine/RTCEngine.ts", "TypeScript", 0, 0, 208, 0, 0, 0, 0, 0, 0, 18, 29, 255
+"/home/malf/code/3d-conference-room/client/src/modules/RTCEngine/RTCUtils.ts", "TypeScript", 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 3, 23
+"/home/malf/code/3d-conference-room/client/src/modules/Socket/index.ts", "TypeScript", 0, 0, 3, 0, 0, 0, 0, 0, 0, 1, 0, 4
+"/home/malf/code/3d-conference-room/client/src/modules/TEngine/TBasicObject.ts", "TypeScript", 0, 0, 79, 0, 0, 0, 0, 0, 0, 3, 14, 96
+"/home/malf/code/3d-conference-room/client/src/modules/TEngine/TCanvasTextureEditor.ts", "TypeScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 4, 31
+"/home/malf/code/3d-conference-room/client/src/modules/TEngine/TEngine.ts", "TypeScript", 0, 0, 351, 0, 0, 0, 0, 0, 0, 42, 57, 450
+"/home/malf/code/3d-conference-room/client/src/modules/TEngine/THelper.ts", "TypeScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 1, 7, 21
+"/home/malf/code/3d-conference-room/client/src/modules/TEngine/TTextures.ts", "TypeScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 3, 13
+"/home/malf/code/3d-conference-room/client/src/modules/TEngine/Tlights.ts", "TypeScript", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 10, 34
+"/home/malf/code/3d-conference-room/client/src/modules/VoiceControlAPI/VCAPI.ts", "TypeScript", 0, 0, 50, 0, 0, 0, 0, 0, 0, 1, 2, 53
+"/home/malf/code/3d-conference-room/client/src/modules/constant.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 6, 18
+"/home/malf/code/3d-conference-room/client/src/modules/eventEmitter.tsx", "TypeScript React", 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3
+"/home/malf/code/3d-conference-room/client/src/modules/randomName.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12
+"/home/malf/code/3d-conference-room/client/src/react-app-env.d.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2
+"/home/malf/code/3d-conference-room/client/src/reportWebVitals.ts", "TypeScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 3, 16
+"/home/malf/code/3d-conference-room/client/src/routes/index.ts", "TypeScript", 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+"/home/malf/code/3d-conference-room/client/src/setupTests.ts", "TypeScript", 0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 1, 6
+"/home/malf/code/3d-conference-room/client/src/utils.ts", "TypeScript", 0, 0, 20, 0, 0, 0, 0, 0, 0, 3, 1, 24
+"/home/malf/code/3d-conference-room/client/tsconfig.json", "JSON with Comments", 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 1, 27
+"/home/malf/code/3d-conference-room/server/package-lock.json", "JSON", 568, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 569
+"/home/malf/code/3d-conference-room/server/server.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 146, 22, 21, 189
+"Total", "-", 17555, 26, 1057, 4, 733, 645, 44, 1, 149, 188, 379, 20781
